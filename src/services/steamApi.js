@@ -7,11 +7,23 @@ const STEAM_STORE_API = 'https://store.steampowered.com/api';
 
 // 工具类软件的AppID列表（需要过滤的）
 const TOOL_APP_IDS = [
-  1812170, // Fences 3
+  607380, // Fences 3
   365670,  // Blender
   1173770, // Wallpaper Engine: Wallpaper Editor
   431960,  // Wallpaper Engine
-  // 可以添加更多工具类软件ID
+  1070560, // Wallpaper Engine: Workshop Tool
+  1493710, // Proton Experimental
+  1420170, // Proton 6.3-8
+  1887720, // Proton 7.0-6
+  2230260, // Proton 8.0-5
+  1391110, // Steam Linux Runtime
+  1628350, // Steam Linux Runtime - Soldier
+  228980,  // Steamworks Common Redistributables
+  1391110, // Steam Linux Runtime 2.0
+  250820,  // SteamVR
+  323910,  // SteamVR Performance Test
+  431730, // Aesprite
+  616720, // Live2DViewerEX
 ];
 
 class SteamAPI {
@@ -133,13 +145,18 @@ class SteamAPI {
         const gameData = data[appid].data;
 
         const details = {
+          appid: parseInt(appid),
+          name: gameData.name || '',
           name_cn: gameData.name || '',
           header_image: gameData.header_image || '',
           capsule_image: gameData.capsule_image || '',
           type: gameData.type || 'game',
           categories: gameData.categories || [],
           genres: gameData.genres || [],
-          dlc: gameData.dlc || []
+          dlc: gameData.dlc || [],
+          price_overview: gameData.price_overview || null,
+          release_date: gameData.release_date || null,
+          short_description: gameData.short_description || ''
         };
 
         // 缓存结果

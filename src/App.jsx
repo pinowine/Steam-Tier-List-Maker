@@ -4,11 +4,13 @@ import SteamImporter from './components/SteamImporter';
 import TierList from './components/TierList';
 import ProgressBar from './components/ProgressBar';
 import AddGameModal from './components/AddGameModal';
+import DlcModal from './components/DlcModal';
 import './styles/globals.css';
 
 function AppContent() {
   const { state } = useApp();
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showDlcModal, setShowDlcModal] = useState(false); 
 
   return (
     <div className="min-h-screen bg-gray-950">
@@ -24,13 +26,22 @@ function AppContent() {
               <p className="text-gray-400 mt-1">创建您的游戏评级列表</p>
             </div>
             {state.games.length > 0 && (
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center gap-2"
-              >
-                <span className="text-xl">+</span>
-                添加游戏
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDlcModal(true)}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <span className="text-xl mt-[-2px]">🎮</span>
+                  浏览DLC
+                </button>
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center gap-2"
+                >
+                  <span className="text-xl mt-[-4px]">+</span>
+                  添加游戏
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -110,6 +121,9 @@ function AppContent() {
 
       {/* 添加游戏模态框 */}
       <AddGameModal isOpen={showAddModal} onClose={() => setShowAddModal(false)} />
+
+      {/* DLC浏览模态框 */}
+      <DlcModal isOpen={showDlcModal} onClose={() => setShowDlcModal(false)} />
 
       {/* 页脚 */}
       <footer className="mt-auto border-t border-gray-800 bg-gray-900">

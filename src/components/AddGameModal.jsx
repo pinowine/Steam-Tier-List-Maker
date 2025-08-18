@@ -9,7 +9,9 @@ function AddGameModal({ isOpen, onClose }) {
     name: '',
     name_cn: '',
     appid: '',
-    imageUrl: ''
+    imageUrl: '',
+    playtimeForever: 0,
+    type: ''
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -29,43 +31,13 @@ function AddGameModal({ isOpen, onClose }) {
       name_cn: formData.name_cn || formData.name,
       header_image: formData.imageUrl || `https://via.placeholder.com/460x215/1b2838/ffffff?text=${encodeURIComponent(formData.name)}`,
       capsule_image: formData.imageUrl || `https://via.placeholder.com/184x69/1b2838/ffffff?text=${encodeURIComponent(formData.name)}`,
-      playtime_forever: 0,
-      type: 'game'
+      playtime_forever: formData.playtimeForever * 60,
+      type: formData.type,
+      parentGame: null
     };
 
     actions.addGame(newGame);
     handleClose();
-  };
-
-  const handleSteamIdAdd = async () => {
-    if (!formData.appid) {
-      alert('请输入Steam游戏ID');
-      return;
-    }
-
-    setSearching(true);
-    try {
-      const details = await steamApi.getGameDetails(formData.appid);
-      if (details) {
-        const newGame = {
-          appid: parseInt(formData.appid),
-          name: details.name_cn || 'Unknown Game',
-          name_cn: details.name_cn,
-          header_image: details.header_image,
-          capsule_image: details.capsule_image,
-          playtime_forever: 0,
-          type: details.type || 'game'
-        };
-        actions.addGame(newGame);
-        handleClose();
-      } else {
-        alert('无法获取游戏信息，请检查ID是否正确');
-      }
-    } catch (error) {
-      alert('获取游戏信息失败: ' + error.message);
-    } finally {
-      setSearching(false);
-    }
   };
 
   const handleSearch = async () => {
@@ -86,14 +58,16 @@ function AddGameModal({ isOpen, onClose }) {
     setSearching(true);
     try {
       const details = await steamApi.getGameDetails(game.appid);
+      console.log(details)
       const newGame = {
         appid: game.appid,
         name: game.name,
         name_cn: details?.name_cn || game.name,
         header_image: details?.header_image || game.tiny_image,
         capsule_image: details?.capsule_image || game.tiny_image,
-        playtime_forever: 0,
-        type: details?.type || 'game'
+        playtime_forever: '非本机',
+        type: details?.type || 'game',
+        dlc: details?.dlc
       };
       actions.addGame(newGame);
       handleClose();
@@ -129,16 +103,6 @@ function AddGameModal({ isOpen, onClose }) {
             手动添加
           </button>
           <button
-            onClick={() => setActiveTab('steamId')}
-            className={`px-4 py-2 rounded-lg transition-colors ${
-              activeTab === 'steamId' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-            }`}
-          >
-            Steam ID
-          </button>
-          <button
             onClick={() => setActiveTab('search')}
             className={`px-4 py-2 rounded-lg transition-colors ${
               activeTab === 'search' 
@@ -154,23 +118,13 @@ function AddGameModal({ isOpen, onClose }) {
         {activeTab === 'manual' && (
           <div className="space-y-4">
             <div>
-              <label className="block text-gray-300 mb-2">游戏名称（英文）*</label>
+              <label className="block text-gray-300 mb-2">游戏名称 *</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="例如: Cyberpunk 2077"
-              />
-            </div>
-            <div>
-              <label className="block text-gray-300 mb-2">游戏名称（中文）</label>
-              <input
-                type="text"
-                value={formData.name_cn}
-                onChange={(e) => setFormData({ ...formData, name_cn: e.target.value })}
-                className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="例如: 赛博朋克2077"
               />
             </div>
             <div>
@@ -188,32 +142,6 @@ function AddGameModal({ isOpen, onClose }) {
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors"
             >
               添加游戏
-            </button>
-          </div>
-        )}
-
-        {/* Steam ID添加 */}
-        {activeTab === 'steamId' && (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-gray-300 mb-2">Steam App ID</label>
-              <input
-                type="text"
-                value={formData.appid}
-                onChange={(e) => setFormData({ ...formData, appid: e.target.value })}
-                className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="例如: 1091500 (Cyberpunk 2077的ID)"
-              />
-              <p className="text-gray-400 text-sm mt-1">
-                可以从Steam商店页面URL中获取ID
-              </p>
-            </div>
-            <button
-              onClick={handleSteamIdAdd}
-              disabled={searching}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition-colors disabled:opacity-50"
-            >
-              {searching ? '获取中...' : '获取游戏信息'}
             </button>
           </div>
         )}

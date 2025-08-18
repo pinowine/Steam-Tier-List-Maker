@@ -1,6 +1,6 @@
 ﻿// 工具类软件的AppID列表
 export const TOOL_APP_IDS = new Set([
-  1812170, // Fences 3
+  607380, // Fences 3
   365670,  // Blender
   1173770, // Wallpaper Engine: Wallpaper Editor
   431960,  // Wallpaper Engine
@@ -15,6 +15,8 @@ export const TOOL_APP_IDS = new Set([
   1391110, // Steam Linux Runtime 2.0
   250820,  // SteamVR
   323910,  // SteamVR Performance Test
+  431730, // Aesprite
+  616720, // Live2DViewerEX
 ]);
 
 // 工具类软件的关键词
