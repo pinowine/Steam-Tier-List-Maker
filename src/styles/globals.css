@@ -1,0 +1,142 @@
+﻿@tailwind base;
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
+@tailwind components;
+@tailwind utilities;
+
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* 游戏卡片动画 */
+.game-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-card:hover {
+  transform: translate3d(-5px, -10%, 5em) rotateZ(-3deg);
+}
+
+/* 拖拽时的样式 */
+.game-card[data-is-dragging="true"] {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+/* 拖拽目标区域高亮 */
+.tier-drop-zone {
+  transition: background-color 0.2s ease;
+}
+
+.tier-drop-zone[data-is-over="true"] {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* 防止文本选中 */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 页面加载动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 全局字体优化 */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 响应式图片容器 */
+.image-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 37.5%; /* 184:69 宽高比 */
+  overflow: hidden;
+}
+
+.image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* DLC卡片特殊样式 */
+.dlc-card {
+  position: relative;
+}
+
+.dlc-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #9333ea, #6b21a8);
+  border-radius: 0.5rem;
+  opacity: 0.3;
+  z-index: -1;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.dlc-card:hover::before {
+  opacity: 0.5;
+}
+
+/* DLC标识动画 */
+@keyframes dlc-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(147, 51, 234, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.8);
+  }
+}
+
+.dlc-indicator {
+  background: linear-gradient(90deg, #9333ea, #7c3aed);
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
