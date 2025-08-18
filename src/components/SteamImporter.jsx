@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 import steamApi from '../services/steamApi';
 

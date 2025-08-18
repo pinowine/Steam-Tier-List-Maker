@@ -1,4 +1,4 @@
-﻿// 工具类软件的AppID列表
+// 工具类软件的AppID列表
 export const TOOL_APP_IDS = new Set([
   607380, // Fences 3
   365670,  // Blender

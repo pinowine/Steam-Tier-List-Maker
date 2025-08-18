@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import steamApi from '../services/steamApi';
 import { useApp } from '../contexts/AppContext';
 
@@ -42,7 +42,7 @@ function DlcModal({ isOpen, onClose }) {
   }, [state.games]);
 
   // 检查DLC是否应该被过滤
-  const shouldFilterDlc = (dlcInfo) => {
+  const shouldFilterDlc = useCallback((dlcInfo) => {
     if (!dlcInfo || !dlcInfo.name) return false;
     
     const nameLower = dlcInfo.name.toLowerCase();
@@ -79,7 +79,7 @@ function DlcModal({ isOpen, onClose }) {
     }
     
     return false;
-  };
+  }, [filters, ownedAppIds, searchTerm]);
 
   // 获取单个游戏的所有DLC信息
   const fetchGameDlcs = async (game) => {
@@ -252,7 +252,7 @@ function DlcModal({ isOpen, onClose }) {
     });
     
     return { totalDlcs, filteredDlcs };
-  }, [dlcData, filters, searchTerm]);
+  }, [dlcData, shouldFilterDlc]);
 
   if (!isOpen) return null;
 

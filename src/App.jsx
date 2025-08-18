@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { AppProvider, useApp } from './contexts/AppContext';
 import SteamImporter from './components/SteamImporter';
 import TierList from './components/TierList';

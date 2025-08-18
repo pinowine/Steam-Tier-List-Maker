@@ -1,4 +1,4 @@
-﻿@tailwind base;
+@tailwind base;
 @layer base {
   img {
     @apply inline-block;

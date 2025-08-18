@@ -1,4 +1,4 @@
-﻿import axios from 'axios';
+import axios from 'axios';
 
 // 使用公共CORS代理
 const CORS_PROXY = 'https://corsproxy.io/?';
@@ -195,4 +195,6 @@ class SteamAPI {
   }
 }
 
-export default new SteamAPI();
+const steamApi = new SteamAPI();
+
+export default steamApi;

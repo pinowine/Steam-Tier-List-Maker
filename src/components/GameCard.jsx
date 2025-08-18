@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -58,7 +58,7 @@ function GameCard({ game, isDragging, showPlaytime = true, showGameName = true }
       setCurrentImageType('capsule')
     } else if (currentImageType === 'capsule') {
       setCurrentImageType('library');
-    } else if (currentImageType === 'library') {
+    } else if (currentImageType === 'library' || imageError) {
       setCurrentImageType('fallback');
       setImageError(true);
     }
