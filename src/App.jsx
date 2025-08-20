@@ -84,14 +84,24 @@ function AppContent() {
                     3
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold mb-1">添加更多游戏</h3>
-                    <p className="text-gray-400 text-sm">可以手动添加非Steam平台的游戏</p>
+                    <h3 className="text-white font-semibold mb-1">定制您的表单</h3>
+                    <p className="text-gray-400 text-sm">编辑标题、表单头和色板并选择可显示的字段</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
                     4
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">添加DLC和更多游戏</h3>
+                    <p className="text-gray-400 text-sm">点选合适的DLC并完善家庭库和非Steam游戏库</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0">
+                    5
                   </div>
                   <div>
                     <h3 className="text-white font-semibold mb-1">导出分享</h3>
@@ -105,8 +115,7 @@ function AppContent() {
                 <ul className="text-gray-300 text-sm space-y-1">
                   <li>• 您的数据会自动保存在浏览器本地</li>
                   <li>• API密钥不会上传到任何服务器</li>
-                  <li>• 支持拖拽重新排序游戏位置</li>
-                  <li>• 可以通过Steam游戏ID添加任意游戏</li>
+                  <li>• 读取需要时间，失败时请检查网络连接，必要时可挂梯</li>
                 </ul>
               </div>
             </div>
@@ -129,7 +138,7 @@ function AppContent() {
       <footer className="mt-auto border-t border-gray-800 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <p className="text-center text-gray-400 text-sm">
-            Steam Tier List Maker - 数据保存在本地浏览器中
+            Steam Tier List Maker - 数据保存在本地浏览器中 - 项目存储于 <a href='https://github.com/pinowine/Steam-Tier-List-Maker' className='text-blue-400'>Github</a>
           </p>
         </div>
       </footer>

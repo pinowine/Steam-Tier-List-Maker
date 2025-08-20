@@ -23,11 +23,12 @@ import GameCard from './GameCard';
 
 // 默认层级配置
 const DEFAULT_TIERS = [
-  { id: 'S', name: 'S', color: 'bg-red-600', label: 'S Tier' },
-  { id: 'A', name: 'A', color: 'bg-orange-500', label: 'A Tier' },
-  { id: 'B', name: 'B', color: 'bg-yellow-500', label: 'B Tier' },
-  { id: 'C', name: 'C', color: 'bg-green-500', label: 'C Tier' },
-  { id: 'D', name: 'D', color: 'bg-blue-500', label: 'D Tier' },
+  { id: 'S', name: 'Exceptional', color: 'bg-red-600', label: 'S Tier' },
+  { id: 'A', name: 'Very Good', color: 'bg-orange-500', label: 'A Tier' },
+  { id: 'B', name: 'Good', color: 'bg-yellow-500', label: 'B Tier' },
+  { id: 'C', name: 'Average', color: 'bg-green-500', label: 'C Tier' },
+  { id: 'D', name: 'Not for me', color: 'bg-blue-500', label: 'D Tier' },
+  { id: 'E', name: 'Briefly played and want more', color: 'bg-blue-500', label: 'D Tier' },
 ];
 
 // 颜色选项
@@ -122,7 +123,7 @@ function DroppableTier({ tier, games, getGameById, onEditTier, onDeleteTier, isE
 
   return (
     <div className="flex border-b-2 border-gray-700 group">
-      <div className={`w-24 ${tier.color} flex items-center justify-center py-8 font-bold text-2xl relative`}>
+      <div className={`w-24 ${tier.color} flex items-center justify-center py-8 font-bold text-large relative text-wrap text-center `}>
         {isEditing ? (
           <input
             type="text"
@@ -158,7 +159,7 @@ function DroppableTier({ tier, games, getGameById, onEditTier, onDeleteTier, isE
       
       <div 
         ref={setNodeRef}
-        className={`flex-1 bg-gray-800 p-4 min-h-[100px] transition-all ${
+        className={`flex-1 bg-gray-800 p-4 min-h-[60px] transition-all ${
           isOver ? 'bg-gray-700 ring-2 ring-blue-400' : ''
         }`}
       >

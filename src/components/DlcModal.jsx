@@ -4,12 +4,11 @@ import { useApp } from '../contexts/AppContext';
 
 // DLC类型关键词，用于过滤
 const DLC_FILTER_KEYWORDS = {
-  ost: ['soundtrack', 'ost', 'music', 'audio', 'sound track'],
-  cosmetic: ['skin', 'cosmetic', 'costume', 'outfit', 'appearance', 'customization', 'decoration'],
-  artbook: ['artbook', 'art book', 'digital art', 'artwork', 'art collection', 'concept art'],
-  currency: ['coins', 'points', 'currency', 'credit', 'gold', 'gems', 'diamonds'],
-  booster: ['booster', 'boost', 'starter', 'upgrade pack', 'time saver'],
-  dlcpack: ['season pass', 'expansion pass', 'dlc bundle', 'complete edition']
+  ost: ['soundtrack', 'ost', 'music', 'audio', 'sound track', "原声", "专辑", "theme song"],
+  cosmetic: ['skin', 'cosmetic', 'costume', 'outfit', 'appearance', 'customization', 'decoration', 'chest', 'bundle', 'wardrobe', 'set', 'look', "装饰", "衣橱", "衣服", "portrait"],
+  artbook: ['artbook', 'art book', 'digital art', 'artwork', 'art collection', 'concept art', 'comic', "原著", 'art', "美术", "设定", "剧情", "图像", "ebook", "画集", "艺术"],
+  booster: ['booster', 'boost', 'starter', 'upgrade pack', 'time saver', 'edition', "追加"],
+  dlcpack: ['season pass', 'expansion pass', 'dlc bundle', 'complete edition', 'pass', '季票']
 };
 
 function DlcModal({ isOpen, onClose }) {
@@ -24,7 +23,6 @@ function DlcModal({ isOpen, onClose }) {
     hideOst: true,
     hideCosmetic: true,
     hideArtbook: true,
-    hideCurrency: true,
     hideBooster: false,
     hideDlcPack: false,
     showOnlyUnowned: true
@@ -48,24 +46,19 @@ function DlcModal({ isOpen, onClose }) {
     const nameLower = dlcInfo.name.toLowerCase();
     
     // 检查各种过滤条件
-    if (filters.hideOst && DLC_FILTER_KEYWORDS.ost.some(keyword => nameLower.includes(keyword))) {
-      return true;
-    }
-    if (filters.hideCosmetic && DLC_FILTER_KEYWORDS.cosmetic.some(keyword => nameLower.includes(keyword))) {
-      return true;
-    }
-    if (filters.hideArtbook && DLC_FILTER_KEYWORDS.artbook.some(keyword => nameLower.includes(keyword))) {
-      return true;
-    }
-    if (filters.hideCurrency && DLC_FILTER_KEYWORDS.currency.some(keyword => nameLower.includes(keyword))) {
-      return true;
-    }
-    if (filters.hideBooster && DLC_FILTER_KEYWORDS.booster.some(keyword => nameLower.includes(keyword))) {
-      return true;
-    }
-    if (filters.hideDlcPack && DLC_FILTER_KEYWORDS.dlcpack.some(keyword => nameLower.includes(keyword))) {
-      return true;
-    }
+    const hasWholeWord = (text, word) => {
+    const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // 转义正则特殊字符
+      // 只把 a-z0-9 当作“词内字符”，其他（空格/标点/中文/连字符）都算边界
+      const re = new RegExp(`(?:^|[^a-z0-9])${escaped}(?:[^a-z0-9]|$)`, 'i');
+      return re.test(text);
+    };
+    const matchAny = (text, keywords) =>
+    keywords.some(k => k instanceof RegExp ? k.test(text) : hasWholeWord(text, k));
+    if (filters.hideOst      && matchAny(nameLower, DLC_FILTER_KEYWORDS.ost)) return true;
+    if (filters.hideCosmetic && matchAny(nameLower, DLC_FILTER_KEYWORDS.cosmetic)) return true;
+    if (filters.hideArtbook  && matchAny(nameLower, DLC_FILTER_KEYWORDS.artbook)) return true;
+    if (filters.hideBooster  && matchAny(nameLower, DLC_FILTER_KEYWORDS.booster)) return true;
+    if (filters.hideDlcPack  && matchAny(nameLower, DLC_FILTER_KEYWORDS.dlcpack)) return true;
     
     // 过滤已拥有的
     if (filters.showOnlyUnowned && ownedAppIds.has(dlcInfo.appid)) {
@@ -293,7 +286,16 @@ function DlcModal({ isOpen, onClose }) {
                       onChange={(e) => setFilters({ ...filters, hideArtbook: e.target.checked })}
                       className="mr-2"
                     />
-                    隐藏艺术集
+                    隐藏美术与文本集
+                  </label>
+                  <label className="flex items-center text-gray-300 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={filters.hideCosmetic}
+                      onChange={(e) => setFilters({ ...filters, hideCosmetic: e.target.checked })}
+                      className="mr-2"
+                    />
+                    隐藏装扮与皮肤
                   </label>
                   <label className="flex items-center text-gray-300 text-sm">
                     <input
@@ -302,7 +304,16 @@ function DlcModal({ isOpen, onClose }) {
                       onChange={(e) => setFilters({ ...filters, hideBooster: e.target.checked })}
                       className="mr-2"
                     />
-                    隐藏加速包
+                    隐藏加速包与补充包
+                  </label>
+                  <label className="flex items-center text-gray-300 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={filters.hideDlcPack}
+                      onChange={(e) => setFilters({ ...filters, hideDlcPack: e.target.checked })}
+                      className="mr-2"
+                    />
+                    隐藏组合包与季票
                   </label>
                 </div>
               </div>
@@ -314,7 +325,8 @@ function DlcModal({ isOpen, onClose }) {
                 {stats.totalDlcs > 0 && (
                   <span>显示 {stats.filteredDlcs} / {stats.totalDlcs} 个DLC</span>
                 )}
-                <p className='text-wrap'>注意：部分DLC可能因为tag不规范而被错误排除，如果没找到请尝试取消过滤选项。</p>
+                <p className='text-wrap mt-2'>⚠注意：</p>
+                <p className='text-wrap'>部分DLC可能因为取名小众不规范而被错误排除，如果没找到请尝试取消过滤选项。</p>
               </div>
             </div>
 
